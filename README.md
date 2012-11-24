@@ -9,17 +9,6 @@ Release:  2008-09-24
 ## License
 GPL(GNU LESSER GENERAL PUBLIC LICENSE)
 
-##Thanks:
-星╄Astral：某些提醒=_=!~
-
-^Talent^：测试以及推广
-
-王好奇：某些hack
-
-tinymce：某些dom操作方法
-
-动易cms：省市数据
-
 ##File:
 license.txt           许可方式
 
