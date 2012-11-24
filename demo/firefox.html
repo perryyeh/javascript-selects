@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>firefox测试</title>
+<style>
+body{font-size: 13px;font-family: Tahoma, Arial;background-color: #fff;}
+div{width:100%;border:solid 1px #7ac432;margin-top:9px;}
+</style>
+</head>
+<body>
+<div>
+先来个select
+<select name="test1" id="test1" disabled onchange="alert(this.name);">
+<option value="" selected>选拔1</option>
+<option value="1">1</option>
+<option value="2">2</option>
+</select>
+<input type="button" value="关&复位" onclick="document.getElementById('test1').disabled=true;document.getElementById('test1').options[0].selected = true;document.getElementById('test2').disabled=true;document.getElementById('test2').options[0].selected = true;"/>
+本页请在firefox opera chrome safari下浏览
+</div>
+<div>
+1.之前disabled的，改成undisabled后，dispatchEvent无效(opera chrome safari有效 仅仅firefox无效,ff需要点击2次)
+<input type="button" value="undisabled&dispatchEvent" onclick="document.getElementById('test1').disabled=false;document.getElementById('test1').options[1].selected = true;var evt = document.createEvent('HTMLEvents');evt.initEvent('change',true,true);document.getElementById('test1').dispatchEvent(evt);"/>
+</div>
+<div>
+2.搜索了下，说直接onchange可触发 的确(firefox opera chrome safari均有效)<input type="button" value="onchange" onclick="document.getElementById('test1').disabled=false;document.getElementById('test1').options[1].selected = true;document.getElementById('test1').onchange();"/>
+</div>
+<div>
+3.不过对addEventListener/attachEvent这种方法添加的，不可以用onchange(firefox opera chrome safari均无效，说onchange不是function)
+<select name="test2" id="test2" disabled">
+<option value="" selected>选拔1</option>
+<option value="1">1</option>
+<option value="2">2</option>
+</select>
+<input type="button" value="ff&onchange" onclick="document.getElementById('test2').disabled=false;document.getElementById('test2').addEventListener('change', function(){alert(this.name)}, false);document.getElementById('test2').options[1].selected = true;document.getElementById('test2').onchange();"/>
+</div>
+</body>
+</html>

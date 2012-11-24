@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>联动下拉菜单简单教程</title>
+<style>
+body{font-size: 13px;font-family: Tahoma, Arial;background-color: #fff;}
+div{width:100%;border:solid 1px #7ac432;margin-top:9px;}
+fieldset{width:100%;height:auto;margin:0;padding:0;}
+fieldset legend{color:#f00;font-size:15px;}
+a{color:#f00;}
+</style>
+</head>
+<body>
+<div>提醒：本压缩包所有文件保存格式均为UTF - 8，引用时请注意格式以免乱码，必要时可重新保存为您需要的格式。正式使用建议使用build目录下压缩过的文件。别被右边滚动条吓倒，其实么简单的4个小例子，您就能使用本程序了。</div>
+<div>本程序在(os win2003)ie6 ie7 opera9 firefox3 chrome0.2 safari3.1下测试通过，有bug暂时mailto：perry(at)yeeh.org，标题请标注"联动下拉菜单"，谢谢您的反馈。</div>
+<fieldset>
+<legend>第一个例子：上数据，绑定！</legend>
+<ol>
+<li>当然是添加1个select，姑且名字叫a1，空option就可以了。<br/><code>&lt;select name="a1"&gt;&lt;/select&gt;</code></li>
+<li>引入类文件。<br/><code>&lt;script type="text/javascript" src="selects.js"&gt;&lt;/script&gt;</code></li>
+<li>引入数据。注意数据格式，每个option都支持三种格式，["010","北京"]，前面的为option的value，后面的为text。{value:"021",text:"上海"}，一目了然的是option的value和text值。"江苏省"，既是value又是text。注意数组的逗号分隔，最后一个后面没逗号：）<br/><code>var db = [<br/>&nbsp; &nbsp; &nbsp; &nbsp; {<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; data : [<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ["","请选择省/直辖市"],<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ["010","北京"],<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {value:"021",text:"上海"},<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "江苏省"<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br/>&nbsp; &nbsp; &nbsp; &nbsp; }<br/>];</code></li>
+<li>获取对象<br/><code>var a1 = document.getElementsByName('a1')[0];</code></li>
+<li>绑定数据<br/><code>s.bind(a1,db)</code></li>
+<li>看看结果吧。
+<select name="a1"></select>
+<script type="text/javascript" src="selects.js"></script>
+<script type="text/javascript">
+var s = selects;
+var db = [
+	{
+		data : [
+			["","请选择省/直辖市"],
+			["010","北京"],
+			{value:"021",text:"上海"},
+			"江苏省"
+		]
+	}
+];
+var a1 = document.getElementsByName('a1')[0];//获取对象
+s.bind(a1,db)
+</script>数据完整上去了。<input type="button" onclick="var str = '';for (var i=0; i<document.getElementsByTagName('select').length; i++) {a = document.getElementsByTagName('select')[i];str += a.name + '=';str += (a.selectedIndex > -1) ? a.options[a.selectedIndex].value : '';str+='\n';};alert(str);" value="获取下所有值吧"></li>
+<li>本例完整html代码：<br/><code>&lt;select name="a1"&gt;&lt;/select&gt;<br/>&lt;script type="text/javascript" src="selects.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript"&gt;<br/>var s = selects;<br/>var db = [<br/>&nbsp; &nbsp; &nbsp; &nbsp; {<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; data : [<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ["","请选择省/直辖市"],<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ["010","北京"],<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {value:"021",text:"上海"},<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "江苏省"<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br/>&nbsp; &nbsp; &nbsp; &nbsp; }<br/>];<br/>var a1 = document.getElementsByName('a1')[0];<br/>s.bind(a1,db)<br/>&lt;/script&gt;</code>
+</li>
+</ol>
+</fieldset>
+<fieldset>
+<legend>第二个例子：二级联动演示（人才数据）</legend>
+<ul>
+<li>不是说联动么，联呢？别急，就来了。</li>
+<li>这次我们给2个select，一个叫jobsort，一个叫jobname。<br/><code>&lt;select name="jobsort"&gt;&lt;/select&gt;&lt;select name="jobname"&gt;&lt;/select&gt;</code></li>
+<li>一样，引入类文件，引入数据，因为文件大，我们就直接引入现成的js吧。<br/><code>&lt;script type="text/javascript"
+src="selects.js"&gt;&lt;/script&gt;</code></li>
+<li>注意，数据有不同哦。我们发现数据是类似这样的<br/><code>var city = [<br/>{<br/>&nbsp;&nbsp;disabled : true,<br/>&nbsp;&nbsp;data : [<br/>&nbsp; &nbsp;["","请选择市"]<br/>&nbsp;&nbsp;]<br/>},<br/>{<br/>&nbsp;&nbsp;value : "021",<br/>&nbsp;&nbsp;data : [<br/>&nbsp; &nbsp;["02100","上海市"]<br/>&nbsp;&nbsp;]<br/>},<br/>{<br/>&nbsp;&nbsp;index : 1,<br/>&nbsp;&nbsp;data : [<br/>&nbsp; &nbsp;["01000","北京市"]<br/>&nbsp;&nbsp;]<br/>},<br/>{<br/>&nbsp;&nbsp;text : "江苏省",<br/>&nbsp;&nbsp;data : [<br/>&nbsp; &nbsp;["","请选择市"],<br/>&nbsp; &nbsp;["02501","苏州"],<br/>&nbsp; &nbsp;{value:"02502",text:"泰州"},<br/>&nbsp; &nbsp;"南京"<br/>&nbsp;&nbsp;]<br/>}<br/>];</code><br/>第一个请选择市，我们之前见过。后面的怎么多了index，value，text？原来这是根据上级选项的值来确定匹配的值，匹配的当然是后面data里面的数据啦。如果是index，value，text都没有，那么就作为默认选项出现。那么disabled呢？这个是判定如果上级没选择，本级是不是灰色(不可选)，此数值为可选项，如果需要post/get传值到其他页面，这个千万记得的别有，或者有也设置为false。注意，firefox下disabled选项无效，因为firefox下对于刚刚un disabled的元素无法触发事件，详情<a href="firefox.html">请看这里</a>。</li>
+<li>取得对象，绑定数据。<br/><code>var s = selects;<br/>//获取对象<br/>var js = document.getElementsByName('jobsort')[0];//职位类别<br/>var
+jn = document.getElementsByName('jobname')[0];//职位名称<br/>//绑定数据<br/>s.bind(js,jobsort);<br/>s.bind(jn,jobname);</code></li>
+<li>可是这还没动啊，嘿嘿，加一句话就行了。前面的是父，后面的是子。<br/><code>s.parent(js,jn);</code></li>
+<li>给个默认值。<br/><code>s.selected(js,{value:''});</code></li>
+<li>look：
+<select name="jobsort"></select><select name="jobname"></select>
+<script type="text/javascript" src="selects.js"></script>
+<script type="text/javascript" src="data_job.js"></script>
+<script type="text/javascript">
+var s = selects;
+//获取对象
+var js = document.getElementsByName('jobsort')[0];//职位类别
+var jn = document.getElementsByName('jobname')[0];//职位名称
+//绑定数据
+s.bind(js,jobsort);
+s.bind(jn,jobname);
+//确定重属关系
+s.parent(js,jn);
+s.selected(js,{value:''});
+//设置默认值
+</script>
+</li>
+<li>来，选好了看看值。<input type="button" onclick="var str = '';for (var i=0; i<document.getElementsByTagName('select').length; i++) {a = document.getElementsByTagName('select')[i];str += a.name + '=';str += (a.selectedIndex > -1) ? a.options[a.selectedIndex].value : '';str+='\n';};alert(str);" value="获取下所有值吧"></li></li>
+<li>本例完整html代码：<br/><code>&lt;select name="jobsort"&gt;&lt;/select&gt;&lt;select name="jobname"&gt;&lt;/select&gt;<br/>&lt;script type="text/javascript"
+src="selects.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="data_job.js"&gt;&lt;/script&gt;<br/>&lt;script
+type="text/javascript"&gt;<br/>var s = selects;<br/>//获取对象<br/>var js = document.getElementsByName('jobsort')[0];//职位类别<br/>var
+jn = document.getElementsByName('jobname')[0];//职位名称<br/>//绑定数据<br/>s.bind(js,jobsort);<br/>s.bind(jn,jobname);<br/>//确定重属
+关系<br/>s.parent(js,jn);<br/>//给个默认值<br/>s.selected(js,{value:''});<br/>&lt;/script&gt;</code></li>
+</ul>
+</fieldset>
+<fieldset>
+<legend>第三个例子：三级联动演示（省市区数据）</legend>
+<ul>
+<li>这次我们要3级联动啦！</li>
+<li>3个对象，3个数据捆绑，2个从属关系。<br/><code>&lt;select name="pro"&gt;&lt;/select&gt;&lt;select name="city"&gt;&lt;/select&gt;&lt;select name="area"&gt;&lt;/select&gt;<br/>&lt;script type="text/javascript" src="selects.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="data_china.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript"&gt;<br/>var s = selects;<br/>//获取对象<br/>var p = document.getElementsByName('pro')[0];//省<br/>var c = document.getElementsByName('city')[0];//市<br/>var a = document.getElementsByName('area')[0];//区<br/>//绑定数据<br/>s.bind(p,province);<br/>s.bind(c,city);<br/>s.bind(a,area);<br/>//确定从属关系<br/>s.parent(p,c);<br/>s.parent(c,a);<br/>&lt;/script&gt;</code></li>
+<li>效果已经有了，不出意料的3级联动。不过呃，我来加个默认值吧。<br/><code>s.selected(p,{value:'上海市'});<br/>s.selected(c,{index:1});<br/>s.selected(a,{text:'虹口区'});</code></li>
+<li class="view">效果：
+<select name="pro"></select><select name="city"></select><select name="area"></select>
+<script type="text/javascript" src="selects.js"></script>
+<script type="text/javascript" src="data_china.js"></script>
+<script type="text/javascript">
+var s = selects;
+//获取对象
+var p = document.getElementsByName('pro')[0];//省
+var c = document.getElementsByName('city')[0];//市
+var a = document.getElementsByName('area')[0];//区
+//绑定数据
+s.bind(p,province);
+s.bind(c,city);
+s.bind(a,area);
+//确定从属关系
+s.parent(p,c);
+s.parent(c,a);
+//设置默认值
+s.selected(p,{value:'上海市'});
+s.selected(c,{index:1});
+s.selected(a,{text:'虹口区'});
+</script></li>
+<li>选选看看值。<input type="button" onclick="var str = '';for (var i=0; i<document.getElementsByTagName('select').length; i++) {a = document.getElementsByTagName('select')[i];str += a.name + '=';str += (a.selectedIndex > -1) ? a.options[a.selectedIndex].value : '';str+='\n';};alert(str);" value="获取下所有值吧"></li></li>
+<li>本例完整html代码：<br/><code>&lt;select name="pro"&gt;&lt;/select&gt;&lt;select name="city"&gt;&lt;/select&gt;&lt;select name="area"&gt;&lt;/select&gt;<br/>&lt;script type="text/javascript" src="selects.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="data_china.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript"&gt;<br/>var s = selects;<br/>//获取对象<br/>var p = document.getElementsByName('pro')[0];//省<br/>var c = document.getElementsByName('city')[0];//市<br/>var a = document.getElementsByName('area')[0];//区<br/>//绑定数据<br/>s.bind(p,province);<br/>s.bind(c,city);<br/>s.bind(a,area);<br/>//确定从属关系<br/>s.parent(p,c);<br/>s.parent(c,a);<br/>//设置默认值<br/>s.selected(p,{value:'上海市'});<br/>s.selected(c,{index:1});<br/>s.selected(a,{text:'虹口区'});<br/>&lt;/script&gt;</code></li>
+</ul>
+</fieldset>
+<fieldset>
+<legend>第四个例子：一拖二测试</legend>
+<ul>
+<li>一个改变，2个跟着变，注意，设置默认值要放在后面：<br/><code>
+&lt;select name="b1"&gt;&lt;/select&gt;&lt;select name="b2"&gt;&lt;/select&gt;&lt;select name="b3"&gt;&lt;/select&gt;&lt;select name="b4"&gt;&lt;/select&gt;&lt;br/&gt;<br/>&lt;select name="c"&gt;&lt;/select&gt;<br/>&lt;script type="text/javascript" src="selects.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="data_demo.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript"&gt;<br/>var s = selects;<br/>var b11 = document.getElementsByName('b1')[0];//省份<br/>var b21 = document.getElementsByName('b2')[0];//市<br/>var b31 = document.getElementsByName('b3')[0];//区<br/>var b41 = document.getElementsByName('b4')[0];//街道<br/>//绑定数据<br/>s.bind(b11,b1);<br/>s.bind(b21,b2);<br/>s.bind(b31,b3);<br/>s.bind(b41,b4);<br/>//确定从属关系<br/>s.parent(b11,b21);<br/>s.parent(b21,b31);<br/>s.parent(b31,b41);<br/>//一拖二测试<br/>var c1 = document.getElementsByName('c')[0];<br/>s.bind(c1,c);<br/>s.parent(b11,c1);<br/>//设置默认值<br/>s.selected(b11,{value:""});<br/>//s.selected(b21,{index:0});<br/>//s.selected(b31,{text:"闸北"});<br/>&lt;/script&gt;
+</code>
+</li>
+<li class="view">效果：<br/>
+<select name="b1"></select><select name="b2"></select><select name="b3"></select><select name="b4"></select><br/>
+<select name="c"></select>
+<script type="text/javascript" src="selects.js"></script>
+<script type="text/javascript" src="data_demo.js"></script>
+<script type="text/javascript">
+	var s = selects;
+	var b11 = document.getElementsByName('b1')[0];//省份
+	var b21 = document.getElementsByName('b2')[0];//市
+	var b31 = document.getElementsByName('b3')[0];//区
+	var b41 = document.getElementsByName('b4')[0];//街道
+	//绑定数据
+	s.bind(b11,b1);
+	s.bind(b21,b2);
+	s.bind(b31,b3);
+	s.bind(b41,b4);
+	//确定从属关系
+	s.parent(b11,b21);
+	s.parent(b21,b31);
+	s.parent(b31,b41);
+	//一拖二测试
+	var c1 = document.getElementsByName('c')[0];
+	s.bind(c1,c);
+	s.parent(b11,c1);
+	//设置默认值
+	s.selected(b11,{value:""});
+	//s.selected(b21,{index:0});
+	//s.selected(b31,{text:"闸北"});
+</script>
+</li>
+<li>看值。<input type="button" onclick="var str = '';for (var i=0; i<document.getElementsByTagName('select').length; i++) {a = document.getElementsByTagName('select')[i];str += a.name + '=';str += (a.selectedIndex > -1) ? a.options[a.selectedIndex].value : '';str+='\n';};alert(str);" value="获取下所有值吧"></li></li>
+<li>收工。</li>
+</ul>
+</fieldset>
+<div>It's all,thanks.</div>
+</body>
+</html>
