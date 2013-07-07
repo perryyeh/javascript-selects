@@ -1,5 +1,5 @@
-﻿Version 1.0.4.rc (2008-09-24)
-	a.添加disabled
+Version 1.0.4.rc (2008-09-24)
+	a.添加disabled 
 
 Version 1.0.3.rc (2008-09-09)
 	a.添加多种数据输入方式
